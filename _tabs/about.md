@@ -42,24 +42,28 @@ order: 4
         var t = data && data.recenttracks && data.recenttracks.track && data.recenttracks.track[0];
         if (!t) { el.innerHTML = '<span style="opacity:0.6;">No recent tracks</span>'; return; }
         var playing = !!(t['@attr'] && t['@attr'].nowplaying);
-        var img = (t.image && t.image[2] && t.image[2]['#text']) || (t.image && t.image[0] && t.image[0]['#text']) || '';
+        var imgUrl = (t.image && t.image[2] && t.image[2]['#text']) || (t.image && t.image[0] && t.image[0]['#text']) || '';
         var url = t.url || '#';
         var artist = (t.artist && t.artist['#text']) || 'Unknown';
-        var placeholder = '<div style="width:48px;height:48px;border-radius:4px;background:var(--border-color,#333);display:flex;align-items:center;justify-content:center;font-size:1.4rem;">&#9835;</div>';
-        var textHtml = '<div>' +
-            '<div style="font-size:0.75rem;opacity:0.6;margin-bottom:2px;">' + (playing ? '&#9835; Now Playing' : '&#9835; Last Played') + '</div>' +
-            '<a href="' + url + '" target="_blank" rel="noreferrer" style="font-weight:600;">' + (t.name || 'Unknown') + '</a>' +
-            '<div style="font-size:0.85rem;opacity:0.8;">' + artist + '</div>' +
-          '</div>';
-        if (img) {
-          var testImg = new Image();
-          testImg.onload = function() { el.innerHTML = '<img src="' + img + '" alt="album art" style="width:48px;height:48px;border-radius:4px;object-fit:cover;">' + textHtml; };
-          testImg.onerror = function() { el.innerHTML = placeholder + textHtml; };
-          testImg.src = img;
-          el.innerHTML = placeholder + textHtml;
-        } else {
-          el.innerHTML = placeholder + textHtml;
+
+        el.innerHTML = '';
+        var imgEl = document.createElement('div');
+        imgEl.style.cssText = 'width:48px;height:48px;border-radius:4px;background:var(--border-color,#333);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;';
+        imgEl.textContent = '♫';
+        if (imgUrl) {
+          var pic = document.createElement('img');
+          pic.alt = 'album art';
+          pic.style.cssText = 'width:48px;height:48px;border-radius:4px;object-fit:cover;';
+          pic.onload = function() { imgEl.replaceWith(pic); };
+          pic.src = imgUrl;
         }
+        el.appendChild(imgEl);
+
+        var info = document.createElement('div');
+        info.innerHTML = '<div style="font-size:0.75rem;opacity:0.6;margin-bottom:2px;">' + (playing ? '&#9835; Now Playing' : '&#9835; Last Played') + '</div>' +
+          '<a href="' + url + '" target="_blank" rel="noreferrer" style="font-weight:600;">' + (t.name || 'Unknown') + '</a>' +
+          '<div style="font-size:0.85rem;opacity:0.8;">' + artist + '</div>';
+        el.appendChild(info);
       })
       .catch(function() {
         el.innerHTML = '<span style="opacity:0.6;">Could not load track</span>';
