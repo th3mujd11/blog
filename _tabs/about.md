@@ -46,13 +46,20 @@ order: 4
         var url = t.url || '#';
         var artist = (t.artist && t.artist['#text']) || 'Unknown';
         var placeholder = '<div style="width:48px;height:48px;border-radius:4px;background:var(--border-color,#333);display:flex;align-items:center;justify-content:center;font-size:1.4rem;">&#9835;</div>';
-        el.innerHTML =
-          (img ? '<img src="' + img + '" alt="album art" style="width:48px;height:48px;border-radius:4px;" onerror="this.outerHTML=\'' + placeholder.replace(/'/g, "\\'") + '\';">' : placeholder) +
-          '<div>' +
+        var textHtml = '<div>' +
             '<div style="font-size:0.75rem;opacity:0.6;margin-bottom:2px;">' + (playing ? '&#9835; Now Playing' : '&#9835; Last Played') + '</div>' +
             '<a href="' + url + '" target="_blank" rel="noreferrer" style="font-weight:600;">' + (t.name || 'Unknown') + '</a>' +
             '<div style="font-size:0.85rem;opacity:0.8;">' + artist + '</div>' +
           '</div>';
+        if (img) {
+          var testImg = new Image();
+          testImg.onload = function() { el.innerHTML = '<img src="' + img + '" alt="album art" style="width:48px;height:48px;border-radius:4px;object-fit:cover;">' + textHtml; };
+          testImg.onerror = function() { el.innerHTML = placeholder + textHtml; };
+          testImg.src = img;
+          el.innerHTML = placeholder + textHtml;
+        } else {
+          el.innerHTML = placeholder + textHtml;
+        }
       })
       .catch(function() {
         el.innerHTML = '<span style="opacity:0.6;">Could not load track</span>';
