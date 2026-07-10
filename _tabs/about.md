@@ -23,8 +23,6 @@ order: 4
 | Tools | Vim maxxer, Wireshark, Ghidra(when I feel lucky), Docker  |
 | Interests | Blue/Red teaming, Aviation security |
 
----
-
 ## What am I listening to now?
 
 <div id="now-playing" style="padding: 0.75rem 1rem; border-radius: 8px; background: var(--card-bg, #1e1e2e); border: 1px solid var(--border-color, #333); display: flex; align-items: center; gap: 1rem; max-width: 480px;">
