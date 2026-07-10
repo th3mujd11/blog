@@ -36,7 +36,7 @@ order: 4
   var el = document.getElementById('now-playing');
 
   function fetchTrack() {
-    fetch('https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=' + USER + '&api_key=' + KEY + '&format=json&limit=1')
+    fetch('https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=' + USER + '&api_key=' + KEY + '&format=json&limit=1', { cache: 'no-store' })
       .then(function(r) { return r.json(); })
       .then(function(data) {
         var t = data && data.recenttracks && data.recenttracks.track && data.recenttracks.track[0];
@@ -104,7 +104,7 @@ order: 4
     return Math.floor(diff / 86400) + 'd ago';
   }
 
-  fetch('/assets/github-events.json')
+  fetch('https://github-events-proxy.th3mujd11.workers.dev', { cache: 'no-store', headers: { 'X-Proxy-Key': '__PROXY_KEY__' } })
     .then(function(r) { return r.json(); })
     .then(function(events) {
       var commits = [];
