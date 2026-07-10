@@ -39,6 +39,16 @@ jobs:
         id: pages
         uses: actions/configure-pages@v4
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Fetch GitHub events
+        run: node scripts/fetch-github-events.mjs
+        env:
+          GH_EVENTS_TOKEN: ${{ secrets.GH_EVENTS_TOKEN }}
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:

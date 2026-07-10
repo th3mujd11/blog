@@ -100,7 +100,7 @@ order: 4
     return Math.floor(diff / 86400) + 'd ago';
   }
 
-  fetch('https://api.github.com/users/th3mujd11/events/public?per_page=30')
+  fetch('/assets/github-events.json')
     .then(function(r) { return r.json(); })
     .then(function(events) {
       var commits = [];
